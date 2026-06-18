@@ -1,0 +1,234 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrate-nos - Harder Division</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/x-icon" href="imagens/icone.jpeg">
+    <link rel="stylesheet" href="estilos/estilos.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="nav-link">HOME</a>
+            </div>
+
+            <h1 class="band-name">HARDER DIVISION</h1>
+
+            <div class="nav-right">
+                <a href="informativo.html" class="nav-link">INFORMATIVO</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Formulário -->
+    <main>
+        <div class="form-container">
+
+            <h2>CONTRATE A HARDER DIVISION</h2>
+
+            <form id="formContratacao">
+
+                <div class="form-group">
+                    <label>Data do Evento</label>
+                    <input type="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Horário de Início</label>
+                    <input type="time" id="horaInicio" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Horário de Término</label>
+                    <input type="time" id="horaFim" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Telefone para Contato</label>
+                    <input type="tel" placeholder="(54) 99999-9999" required>
+                </div>
+
+                <div class="form-group">
+                    <label>E-mail para Contato</label>
+                    <input type="email" placeholder="contato@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>O local possui equipamento de som?</label>
+
+                    <label>
+                        <input type="radio" name="som" value="Sim" required>
+                        Sim
+                    </label>
+
+                    <label>
+                        <input type="radio" name="som" value="Não">
+                        Não
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Material de Divulgação</label>
+
+                    <select required>
+                        <option value="">Selecione</option>
+                        <option>Arte criada pela casa/bar</option>
+                        <option>Arte criada pela banda</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox">
+                        Desejo cobertura fotográfica do evento
+                    </label>
+                </div>
+
+                
+<div class="form-group">
+    <label>Endereço do Evento</label>
+
+    <input
+        type="text"
+        id="endereco"
+        placeholder="Rua, número, cidade..."
+        required>
+
+    <br>
+
+    <iframe
+        id="mapaPreview"
+        width="100%"
+        height="350"
+        style="border:0; border-radius:10px;"
+        loading="lazy"
+        allowfullscreen>
+    </iframe>
+</div>
+
+
+
+                <button type="submit" class="btn-enviar">
+                    ENVIAR SOLICITAÇÃO
+                </button>
+
+            </form>
+
+        </div>
+    </main>
+
+    <script>
+
+    document.getElementById("formContratacao").addEventListener("submit", function(e){
+
+        e.preventDefault();
+
+        const inicio = document.getElementById("horaInicio").value;
+        const fim = document.getElementById("horaFim").value;
+
+        const [h1,m1] = inicio.split(":").map(Number);
+        const [h2,m2] = fim.split(":").map(Number);
+
+        const minutosInicio = h1 * 60 + m1;
+        const minutosFim = h2 * 60 + m2;
+
+        const diferenca = minutosFim - minutosInicio;
+
+        if(diferenca > 105){
+            alert("A duração máxima permitida é de 1 hora e 45 minutos.");
+            return;
+        }
+
+        const dataEvento =
+            document.querySelector('input[type="date"]').value;
+
+        const telefone =
+            document.querySelector('input[type="tel"]').value;
+
+        const emailCliente =
+            document.querySelector('input[type="email"]').value;
+
+        const possuiSom =
+            document.querySelector('input[name="som"]:checked')?.value || "Não informado";
+
+        const marketing =
+            document.querySelector('select').value;
+
+        const fotos =
+            document.querySelector('input[type="checkbox"]').checked
+            ? "Sim"
+            : "Não";
+
+        const endereco =
+            document.querySelector('input[placeholder="Rua, número, cidade..."]').value;
+
+        const assunto =
+            "Solicitação de Contratação - Harder Division";
+
+        const mensagem =
+`Nova solicitação de show
+
+Data do Evento:
+${dataEvento}
+
+Horário:
+Início: ${inicio}
+Fim: ${fim}
+
+Telefone:
+${telefone}
+
+E-mail:
+${emailCliente}
+
+Possui equipamento de som?
+${possuiSom}
+
+Material de divulgação:
+${marketing}
+
+Cobertura fotográfica:
+${fotos}
+
+Endereço:
+${endereco}
+`;
+
+        window.location.href =
+        `mailto:contatoharderdivision@gmail.com?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(mensagem)}`;
+
+    });
+
+    </script>
+    
+<script>
+
+const enderecoInput = document.getElementById("endereco");
+const mapa = document.getElementById("mapaPreview");
+
+enderecoInput.addEventListener("change", () => {
+
+    const endereco = encodeURIComponent(enderecoInput.value);
+
+    mapa.src =
+        `https://maps.google.com/maps?q=${endereco}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+
+});
+
+</script>
+
+
+
+</body>
+</html>
+
